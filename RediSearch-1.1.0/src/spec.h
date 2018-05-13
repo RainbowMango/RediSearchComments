@@ -25,7 +25,7 @@ typedef enum fieldType { FIELD_FULLTEXT, FIELD_NUMERIC, FIELD_GEO, FIELD_TAG } F
 #define SPEC_NOSTEM_STR "NOSTEM"
 #define SPEC_TAG_STR "TAG"
 #define SPEC_SORTABLE_STR "SORTABLE"
-#define SPEC_STOPWORDS_STR "STOPWORDS"
+#define SPEC_STOPWORDS_STR "STOPWORDS" //停止词，例如"的"、"是"等，几乎所有文档都存在该词，搜索引擎会忽略掉这些词
 #define SPEC_NOINDEX_STR "NOINDEX"
 #define SPEC_SEPARATOR_STR "SEPARATOR"
 
@@ -75,9 +75,9 @@ typedef struct {
 Each field has a unique id that's a power of two, so we can filter fields
 by a bit mask.
 Each field has a type, allowing us to add non text fields in the future */
-typedef struct fieldSpec {
-  char *name;
-  FieldType type;
+typedef struct fieldSpec { //文档域结构
+  char *name; //域名
+  FieldType type; //域的类型，比如文本、数字等
   FieldSpecOptions options;
 
   int sortIdx;
@@ -85,7 +85,7 @@ typedef struct fieldSpec {
   /**
    * Unique field index. Each field has a unique index regardless of its type
    */
-  uint16_t index;
+  uint16_t index; //域在当前索引用的位置，也即第几个域
 
   union {
     TextFieldOptions textOpts;
@@ -161,13 +161,13 @@ typedef uint16_t FieldSpecDedupeArray[SPEC_MAX_FIELDS];
 
 #define FIELD_BIT(fs) (((t_fieldMask)1) << (fs)->textOpts.id)
 
-typedef struct {
-  char *name;
-  FieldSpec *fields;
-  int numFields;
+typedef struct { //索引数据结构定义
+  char *name; //索引名字
+  FieldSpec *fields; //域信息数组
+  int numFields; //当前索引中存放的域个数，也指明了fields中前多少个元素是有效的
 
   IndexStats stats;
-  IndexFlags flags;
+  IndexFlags flags; //索引标志，比如是否支持offset等，多个标志可按位或
 
   Trie *terms;
 
@@ -175,7 +175,7 @@ typedef struct {
 
   DocTable docs;
 
-  StopWordList *stopwords;
+  StopWordList *stopwords; //停止词列表，停止词意味因为太常见而被搜索引擎忽略的词列表
 
   void *gc;
 

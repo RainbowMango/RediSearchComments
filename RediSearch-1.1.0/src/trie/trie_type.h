@@ -11,9 +11,9 @@ extern RedisModuleType *TrieType;
 #define TRIE_ENCVER_CURRENT 1
 #define TRIE_ENCVER_NOPAYLOADS 0
 
-typedef struct {
-  TrieNode *root;
-  size_t size;
+typedef struct { //前缀树定义
+  TrieNode *root; //树的头节点
+  size_t size; //前缀数元素个数，不含头节点
 } Trie;
 
 typedef struct {

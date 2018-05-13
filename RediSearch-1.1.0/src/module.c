@@ -1045,17 +1045,17 @@ so keep it short!
 ### Parameters:
 
     - index: the index name to create. If it exists the old spec will be
-overwritten
+overwritten //索引名字，每个索引好比一张表的名字，不过此处表格为倒排表
 
     - NOOFFSETS: If set, we do not store term offsets for documents (saves memory, does not allow
-      exact searches)
+      exact searches) //该选项决定不保存词在文档中的偏移位置，以便节省内存。没有偏移位置，也就无法实现高亮，比如百度搜索结果中的关键词高亮
 
     - NOFIELDS: If set, we do not store field bits for each term. Saves memory, does not allow
       filtering by specific fields.
 
     - SCHEMA: After the SCHEMA keyword we define the index fields. They can be either numeric or
-      textual.
-      For textual fields we optionally specify a weight. The default weight is 1.0
+      textual. //SCHEMA 标记后续参数都是文档拆分成的field，可以是数值field也可以是文本field。
+      For textual fields we optionally specify a weight. The default weight is 1.0 //对于文本field，缺省指定1.0作为权重
       The weight is a double, but does not need to be normalized.
 
 ### Returns:
@@ -1065,7 +1065,7 @@ overwritten
 int CreateIndexCommand(RedisModuleCtx *ctx, RedisModuleString **argv, int argc) {
   // at least one field, the SCHEMA keyword, and number of field/text args must be even
   if (argc < 5) {
-    return RedisModule_WrongArity(ctx);
+    return RedisModule_WrongArity(ctx); //检查参数个数，创建索引至少需要5个参数。 "FT.CREATE" "索引名字" "SCHEMA" "TEXT" "域名字"
   }
 
   if (RedisModule_GetSelectedDb(ctx) != 0) {
@@ -1076,7 +1076,7 @@ int CreateIndexCommand(RedisModuleCtx *ctx, RedisModuleString **argv, int argc) 
   RedisModule_ReplicateVerbatim(ctx);
   char *err;
 
-  IndexSpec *sp = IndexSpec_CreateNew(ctx, argv, argc, &err);
+  IndexSpec *sp = IndexSpec_CreateNew(ctx, argv, argc, &err); //跟据命令附带的参数创建一个索引，返回索引指针
   if (sp == NULL) {
 
     RedisModule_ReplyWithError(ctx, err ? err : "Could not create new index");
@@ -1527,7 +1527,7 @@ int RediSearch_InitModuleInternal(RedisModuleCtx *ctx, RedisModuleString **argv,
 
   RM_TRY(NumericIndexType_Register, ctx);
 
-  RM_TRY(RedisModule_CreateCommand, ctx, RS_ADD_CMD, AddDocumentCommand, "write deny-oom", 1, 1, 1);
+  RM_TRY(RedisModule_CreateCommand, ctx, RS_ADD_CMD, AddDocumentCommand, "write deny-oom", 1, 1, 1); //添加文档命令 FT.CREATE
 
   RM_TRY(RedisModule_CreateCommand, ctx, RS_SAFEADD_CMD, SafeAddDocumentCommand, "write deny-oom",
          1, 1, 1);

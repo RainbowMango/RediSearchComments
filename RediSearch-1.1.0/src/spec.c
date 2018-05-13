@@ -106,17 +106,17 @@ IndexSpec *IndexSpec_CreateNew(RedisModuleCtx *ctx, RedisModuleString **argv, in
   return sp;
 }
 
-int __findOffset(const char *arg, const char **argv, int argc) {
+int __findOffset(const char *arg, const char **argv, int argc) { //从字符串指针数组中找到指定字符串的指针，此处用于确定参数在参数列表中位置
   for (int i = 0; i < argc; i++) {
-    if (!strcasecmp(arg, argv[i])) {
+    if (!strcasecmp(arg, argv[i])) { //字符串比较时忽略大小写，也即Redis的风格，命令统一忽略大小写
       return i;
     }
   }
   return -1;
 }
 
-int __argExists(const char *arg, const char **argv, int argc, int maxIdx) {
-  int idx = __findOffset(arg, argv, argc);
+int __argExists(const char *arg, const char **argv, int argc, int maxIdx) { //检查指定的参数arg是否存在于参数列表中。
+  int idx = __findOffset(arg, argv, argc); //TODO: 性能有待优化，没必要将全部参数个数argc传入，只传入maxIdx即可，maxIdex后的内容都是无效的
   // printf("pos for %s: %d\n", arg, idx);
   return idx >= 0 && idx < maxIdx;
 }
@@ -251,13 +251,13 @@ void _spec_buildSortingTable(IndexSpec *spec, int len) {
   */
 IndexSpec *IndexSpec_Parse(const char *name, const char **argv, int argc, char **err) {
   *err = NULL;
-  int schemaOffset = __findOffset(SPEC_SCHEMA_STR, argv, argc);
+  int schemaOffset = __findOffset(SPEC_SCHEMA_STR, argv, argc); //确定SCHEMA参数位置
   // no schema or schema towrards the end
   if (schemaOffset == -1) {
     SET_ERR(err, "schema not found");
     return NULL;
   }
-  IndexSpec *spec = NewIndexSpec(name, 0);
+  IndexSpec *spec = NewIndexSpec(name, 0); //初始化一个索引
 
   if (__argExists(SPEC_NOOFFSETS_STR, argv, argc, schemaOffset)) {
     spec->flags &= ~(Index_StoreTermOffsets | Index_StoreByteOffsets);
@@ -275,7 +275,7 @@ IndexSpec *IndexSpec_Parse(const char *name, const char **argv, int argc, char *
     spec->flags &= ~Index_StoreFreqs;
   }
 
-  int swIndex = __findOffset(SPEC_STOPWORDS_STR, argv, argc);
+  int swIndex = __findOffset(SPEC_STOPWORDS_STR, argv, argc); //确定STOPWORDS参数位置
   if (swIndex >= 0 && swIndex + 1 < schemaOffset) {
     int listSize = atoi(argv[swIndex + 1]);
     if (listSize < 0 || (swIndex + 2 + listSize > schemaOffset)) {
@@ -285,14 +285,14 @@ IndexSpec *IndexSpec_Parse(const char *name, const char **argv, int argc, char *
     spec->stopwords = NewStopWordListCStr(&argv[swIndex + 2], listSize);
     spec->flags |= Index_HasCustomStopwords;
   } else {
-    spec->stopwords = DefaultStopWordList();
+    spec->stopwords = DefaultStopWordList(); //如果没有提供STOPWORDS参数，则使用默认的停止词列表
   }
 
   uint64_t id = 0;
   int sortIdx = 0;
 
   int i = schemaOffset + 1;
-  while (i < argc && spec->numFields < SPEC_MAX_FIELDS) {
+  while (i < argc && spec->numFields < SPEC_MAX_FIELDS) { //SCHEMA之后便全部都是field信息了
 
     FieldSpec *fs = &spec->fields[spec->numFields++];
     fs->index = spec->numFields - 1;
@@ -515,7 +515,7 @@ int IndexSpec_IsStopWord(IndexSpec *sp, const char *term, size_t len) {
 
 IndexSpec *NewIndexSpec(const char *name, size_t numFields) {
   IndexSpec *sp = rm_malloc(sizeof(IndexSpec));
-  sp->fields = rm_calloc(sizeof(FieldSpec), numFields ? numFields : SPEC_MAX_FIELDS);
+  sp->fields = rm_calloc(sizeof(FieldSpec), numFields ? numFields : SPEC_MAX_FIELDS); //创建域描述信息数组，如果域数量为0，说明是初始化，按最大支持的域创建
   sp->numFields = 0;
   sp->flags = INDEX_DEFAULT_FLAGS;
   sp->name = rm_strdup(name);

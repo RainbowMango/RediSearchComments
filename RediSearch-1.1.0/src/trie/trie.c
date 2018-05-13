@@ -3,7 +3,7 @@
 #include "sparse_vector.h"
 #include "redisearch.h"
 
-size_t __trieNode_Sizeof(t_len numChildren, t_len slen) {
+size_t __trieNode_Sizeof(t_len numChildren, t_len slen) { //计算一个前缀树节点大小，由三部分构成: 节点本身信息、指向子节点的指针、节点本身字符串
   return sizeof(TrieNode) + numChildren * sizeof(TrieNode *) + sizeof(rune) * (slen + 1);
 }
 

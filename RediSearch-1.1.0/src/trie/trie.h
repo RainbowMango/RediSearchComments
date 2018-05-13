@@ -33,26 +33,26 @@ size_t __triePayload_Sizeof(uint32_t len);
  * with score 0 to the
  * trie.
  */
-typedef struct {
+typedef struct { //前缀树结点定义
   // the string length of this node. can be 0
-  t_len len;
+  t_len len; //结点字符串长度，用于标识str[]长度
   // the number of child nodes
-  t_len numChildren;
+  t_len numChildren; //子结点数量，不确定是一级子结点还是二级子结点，猜测是一级子结点，方便遍历查询
 
-  unsigned char flags;
+  unsigned char flags; //节点标志，例如是否是终端节点
 
   // the node's score. Non termn
-  float score;
+  float score; //当前结点的分数, 非终端节点分数为0，也就是说不能插入非终端节点
 
   // the maximal score of any descendant of this node, used to optimize
   // traversal
-  float maxChildScore;
+  float maxChildScore; //所有子结点的最高分数，用于优化遍历
 
   // the payload of terminal node. could be NULL if it's not terminal
   TriePayload *payload;
 
   // the string of the current node
-  rune str[];
+  rune str[]; //当前节点的字符串
   // ... now come the children, to be accessed with __trieNode_children
 } TrieNode;
 #pragma pack()
