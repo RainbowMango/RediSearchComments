@@ -60,7 +60,7 @@ char *GetFieldNameByBit(IndexSpec *sp, t_fieldMask id) {
     SCHEMA {field} [TEXT [WEIGHT {weight}]] | [NUMERIC]
 */
 IndexSpec *IndexSpec_ParseRedisArgs(RedisModuleCtx *ctx, RedisModuleString *name,
-                                    RedisModuleString **argv, int argc, char **err) {
+                                    RedisModuleString **argv, int argc, char **err) { //解析参数，实现了从RedisModuleString到C字符串的转换
 
   const char *args[argc];
   for (int i = 0; i < argc; i++) {

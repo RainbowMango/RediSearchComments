@@ -49,7 +49,7 @@ typedef struct { //前缀树结点定义
   float maxChildScore; //所有子结点的最高分数，用于优化遍历
 
   // the payload of terminal node. could be NULL if it's not terminal
-  TriePayload *payload;
+  TriePayload *payload; //词的元数据，关于payload的解释参见https://www.ibm.com/developerworks/cn/opensource/os-cn-lucene-pl/index.html
 
   // the string of the current node
   rune str[]; //当前节点的字符串

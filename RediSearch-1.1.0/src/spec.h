@@ -99,9 +99,9 @@ typedef struct fieldSpec { //文档域结构
 #define FieldSpec_IsNoStem(fs) ((fs)->options & FieldSpec_NoStemming)
 #define FieldSpec_IsIndexable(fs) (0 == ((fs)->options & FieldSpec_NotIndexable))
 
-typedef struct {
+typedef struct { //索引状态
   size_t numDocuments;
-  size_t numTerms;
+  size_t numTerms; //当前索引的索引词数量
   size_t numRecords;
   size_t invertedSize;
   size_t invertedCap;
@@ -163,7 +163,7 @@ typedef uint16_t FieldSpecDedupeArray[SPEC_MAX_FIELDS];
 
 typedef struct { //索引数据结构定义
   char *name; //索引名字
-  FieldSpec *fields; //域信息数组
+  FieldSpec *fields; //域信息数组, 每个元素记录域基本信息
   int numFields; //当前索引中存放的域个数，也指明了fields中前多少个元素是有效的
 
   IndexStats stats;
