@@ -1045,7 +1045,7 @@ so keep it short!
 ### Parameters:
 
     - index: the index name to create. If it exists the old spec will be
-overwritten //索引名字，每个索引好比一张表的名字，不过此处表格为倒排表
+overwritten //索引名字
 
     - NOOFFSETS: If set, we do not store term offsets for documents (saves memory, does not allow
       exact searches) //该选项决定不保存词在文档中的偏移位置，以便节省内存。没有偏移位置，也就无法实现高亮，比如百度搜索结果中的关键词高亮
@@ -1065,7 +1065,7 @@ overwritten //索引名字，每个索引好比一张表的名字，不过此处表格为倒排表
 int CreateIndexCommand(RedisModuleCtx *ctx, RedisModuleString **argv, int argc) {
   // at least one field, the SCHEMA keyword, and number of field/text args must be even
   if (argc < 5) {
-    return RedisModule_WrongArity(ctx); //检查参数个数，创建索引至少需要5个参数。 "FT.CREATE" "索引名字" "SCHEMA" "TEXT" "域名字"
+    return RedisModule_WrongArity(ctx); //检查参数个数，创建索引至少需要5个参数。 "FT.CREATE" "索引名字" "SCHEMA" "域名字" "TEXT" 
   }
 
   if (RedisModule_GetSelectedDb(ctx) != 0) {

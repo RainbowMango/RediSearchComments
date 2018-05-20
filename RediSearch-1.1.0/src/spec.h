@@ -51,7 +51,7 @@ typedef enum {
 // Specific options for text fields
 typedef struct {
   // weight in frequency calculations
-  double weight;
+  double weight; //文本域的权重，默认为1.0
   // bitwise id for field masks
   t_fieldId id;
 } TextFieldOptions;
@@ -88,7 +88,7 @@ typedef struct fieldSpec { //文档域结构
   uint16_t index; //域在当前索引用的位置，也即第几个域
 
   union {
-    TextFieldOptions textOpts;
+    TextFieldOptions textOpts; //全文本域的选项
     TagFieldOptions tagOpts;
   };
 
@@ -163,7 +163,7 @@ typedef uint16_t FieldSpecDedupeArray[SPEC_MAX_FIELDS];
 
 typedef struct { //索引数据结构定义
   char *name; //索引名字
-  FieldSpec *fields; //域信息数组, 每个元素记录域基本信息
+  FieldSpec *fields; //域信息数组, 每个元素记录域基本信息, 创建索引时该数组长度初始化为1024
   int numFields; //当前索引中存放的域个数，也指明了fields中前多少个元素是有效的
 
   IndexStats stats;
