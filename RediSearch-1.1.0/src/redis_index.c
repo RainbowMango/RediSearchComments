@@ -141,7 +141,7 @@ RedisSearchCtx *NewSearchCtxC(RedisModuleCtx *ctx, const char *indexName) {
   IndexSpec *sp = RedisModule_ModuleTypeGetValue(k);
 
   RedisSearchCtx *sctx = rm_malloc(sizeof(*sctx));
-  *sctx = (RedisSearchCtx){
+  *sctx = (RedisSearchCtx){ //指定结构体成员进行初始化，好外是成员顺序可以不定且有比较好的可读性，Linux内核多采用此方式
       .spec = sp,
       .redisCtx = ctx,
       .key = k,

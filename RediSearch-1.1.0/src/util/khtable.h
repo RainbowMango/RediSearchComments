@@ -6,7 +6,7 @@
 #include <stdio.h>
 
 // KHTable - Minimalistic hash table without deletion support
-// This uses a block allocator for its entries, so it's quite fast!
+// This uses a block allocator for its entries, so it's quite fast! //KHTable简单版本的hash表，不支持删除操作，使用块分配器做为其元素，所以非常快
 
 /**
  * Entry structure for KHTable. The datastructure stored in the hashtable

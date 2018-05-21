@@ -876,7 +876,7 @@ Seach the index with a textual query, returning either documents or just ids.
    - index: The Fulltext index name. The index must be first created with
 FT.CREATE
 
-   - query: the text query to search. If it's more than a single word, put it
+   - query: the text query to search. If it's more than a single word, put it //query, 属于搜索引擎术语之一，表示查询的内容，可以是关键词也可能是关键词列表
 in
 quotes.
    Basic syntax like quotes for exact matching is supported.
@@ -1527,7 +1527,7 @@ int RediSearch_InitModuleInternal(RedisModuleCtx *ctx, RedisModuleString **argv,
 
   RM_TRY(NumericIndexType_Register, ctx);
 
-  RM_TRY(RedisModule_CreateCommand, ctx, RS_ADD_CMD, AddDocumentCommand, "write deny-oom", 1, 1, 1); //添加文档命令 FT.CREATE
+  RM_TRY(RedisModule_CreateCommand, ctx, RS_ADD_CMD, AddDocumentCommand, "write deny-oom", 1, 1, 1); //添加文档命令 FT.ADD
 
   RM_TRY(RedisModule_CreateCommand, ctx, RS_SAFEADD_CMD, SafeAddDocumentCommand, "write deny-oom",
          1, 1, 1);
@@ -1542,7 +1542,7 @@ int RediSearch_InitModuleInternal(RedisModuleCtx *ctx, RedisModuleString **argv,
 
   RM_TRY(RedisModule_CreateCommand, ctx, RS_DEL_CMD, DeleteCommand, "write", 1, 1, 1);
 
-  RM_TRY(RedisModule_CreateCommand, ctx, RS_SEARCH_CMD, SearchCommand, "readonly", 1, 1, 1);
+  RM_TRY(RedisModule_CreateCommand, ctx, RS_SEARCH_CMD, SearchCommand, "readonly", 1, 1, 1); //查询命令 FT.SEARCH
   RM_TRY(RedisModule_CreateCommand, ctx, RS_AGGREGATE_CMD, AggregateCommand, "readonly", 1, 1, 1);
 
   RM_TRY(RedisModule_CreateCommand, ctx, RS_GET_CMD, GetSingleDocumentCommand, "readonly", 1, 1, 1);
@@ -1550,7 +1550,7 @@ int RediSearch_InitModuleInternal(RedisModuleCtx *ctx, RedisModuleString **argv,
   RM_TRY(RedisModule_CreateCommand, ctx, RS_MGET_CMD, GetDocumentsCommand, "readonly", 0, 0, -1);
 
   RM_TRY(RedisModule_CreateCommand, ctx, RS_CREATE_CMD, CreateIndexCommand, "write deny-oom", 1, 1,
-         1); //创建索引命令
+         1); //创建索引命令 FT.CREATE
   RM_TRY(RedisModule_CreateCommand, ctx, RS_CMD_PREFIX ".OPTIMIZE", OptimizeIndexCommand,
          "write deny-oom", 1, 1, 1);
   RM_TRY(RedisModule_CreateCommand, ctx, RS_DROP_CMD, DropIndexCommand, "write", 1, 1, 1);

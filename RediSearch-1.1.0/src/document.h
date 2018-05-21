@@ -30,15 +30,15 @@
  */
 
 typedef struct {
-  const char *name;
-  RedisModuleString *text;
+  const char *name; //添加文档时指定的field名称
+  RedisModuleString *text; //添加文档时指定的field内容
 } DocumentField;
 
 typedef struct {
-  RedisModuleString *docKey;
-  DocumentField *fields;
-  int numFields;
-  float score;
+  RedisModuleString *docKey; //即将文档添加到索引时使用的docId，也是检索结果
+  DocumentField *fields; //即文档中实际包含的域数组，与索引结构不同，该数组为实际值，并不是所支持的最大值
+  int numFields; //即文档中实际包含的域个数
+  float score; //即将文档添加到索引时使用的score
   const char *language;
   t_docId docId;
 
@@ -147,9 +147,9 @@ struct DocumentIndexer;
 /**
  * Context used when indexing documents.
  */
-typedef struct RSAddDocumentCtx {
+typedef struct RSAddDocumentCtx { //文档被索引后存放结构定义
   struct RSAddDocumentCtx *next;  // Next context in the queue
-  Document doc;                   // Document which is being indexed
+  Document doc;                   // Document which is being indexed //被建索引的无始文档
   union {
     RedisModuleBlockedClient *bc;  // Client
     RedisSearchCtx *sctx;

@@ -10,10 +10,10 @@
 
 /** Context passed to all redis related search handling functions. */
 typedef struct {
-  RedisModuleCtx *redisCtx;
-  RedisModuleKey *key;
-  RedisModuleString *keyName;
-  IndexSpec *spec;
+  RedisModuleCtx *redisCtx; //模块信息，也里RediSearch本身就是Redis的一个模块，也就是RediSearch模块的相关信息
+  RedisModuleKey *key; //OpenKey 返回的东东
+  RedisModuleString *keyName; //"idx:" + 索引名字
+  IndexSpec *spec; //索引数据结构
 } RedisSearchCtx;
 
 #define SEARCH_CTX_STATIC(ctx, sp) \
